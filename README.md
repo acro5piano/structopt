@@ -1,6 +1,6 @@
 # structopt
 
-Decorator-based CLI option parser
+WIP: Decorator-based CLI option parser
 
 # Example
 
