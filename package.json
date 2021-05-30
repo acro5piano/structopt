@@ -1,0 +1,8 @@
+{
+  "name": "structopt",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:acro5piano/structopt",
+  "author": "gosho-kazuya <ketsume0211@gmail.com>",
+  "license": "MIT"
+}
