@@ -14,7 +14,7 @@ class Opt {
   @Option({ description: 'Set speed', short: '-v', long: '--velocity', defaultValue: '42' })
   speed!: number
 
-  @Option()
+  @Option({ description: 'search pattern' })
   input!: string
 
   @Option({ description: 'Output file, stdout if not present', nullable: true })

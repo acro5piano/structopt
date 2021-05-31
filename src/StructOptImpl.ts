@@ -82,14 +82,9 @@ export class StructOptImpl<T> {
     const options = this.options.filter(
       (o) => (o.type === 'string' || o.type === 'number') && (o.short || o.long),
     )
+    const optionsMaxLength = getPrintedMaxLength(options)
     const args = this.options.filter((o) => o.short === undefined && o.long === undefined)
-    const optionsMaxLength = options.reduce((max, option) => {
-      if (max < printOptionLeft(option).length) {
-        return printOptionLeft(option).length
-      } else {
-        return max
-      }
-    }, 0)
+    const argsMaxLength = getPrintedMaxLength(args)
 
     return `${this.name} ${this.version || ''}
 ${this.about}
@@ -115,8 +110,20 @@ ${options
   )
   .join('\n')}`
 }
-
+${
+  args.length > 0 &&
+  `
+ARGS:
+${args
+  .map(
+    (arg) =>
+      `${printArgLeft(arg)}${' '.repeat(argsMaxLength - printOptionLeft(arg).length)}    ${
+        arg.description || ''
+      }`,
+  )
+  .join('\n')}
 `
+}`
   }
 }
 
@@ -126,4 +133,18 @@ function printFlagsLeft(option: IOption) {
 
 function printOptionLeft(option: IOption) {
   return `    ${option.short ? `${option.short}, ` : '    '}${option.long || ''} <${option.key}>`
+}
+
+function printArgLeft(option: IOption) {
+  return `    <${option.key}>`
+}
+
+function getPrintedMaxLength(options: IOption[]) {
+  return options.reduce((max, option) => {
+    if (max < printOptionLeft(option).length) {
+      return printOptionLeft(option).length
+    } else {
+      return max
+    }
+  }, 0)
 }

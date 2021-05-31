@@ -21,10 +21,10 @@ class GrepArgs {
   @Option({ long: true, description: 'use LABEL as the standard input file name prefix' })
   label!: string
 
-  @Option()
+  @Option({ description: 'search pattern' })
   patterns!: string
 
-  @Option()
+  @Option({ description: 'search files' })
   file!: string
 }
 
