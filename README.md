@@ -53,7 +53,7 @@ console.log(opt)
 And run
 
 ```
-ts-node example.ts
+ts-node example.ts --debug -v 80 input_file
 
 // => { debug: true, speed: 80, input: 'input_file' }
 
