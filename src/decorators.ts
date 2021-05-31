@@ -6,7 +6,7 @@ import { addStructOpt } from './registry/structOptRegistry'
 import { addThunk, flushThunk } from './registry/thunkRegistry'
 import { instanceToPrimitiveType } from './utils'
 
-export function StructOpt(args: Omit<IStructOpt, 'key'>) {
+export function StructOpt(args: Omit<IStructOpt, 'key'> = {}) {
   return function (constructor: Function) {
     const structOpt = new StructOptImpl({
       ...args,

@@ -23,6 +23,11 @@ export class StructOptImpl<T> {
 
   parse([x, ...xs]: string[], parsed = {}): Instance<T> {
     if (x === undefined) {
+      for (const option of this.options) {
+        if (option.defaultValue !== undefined && (parsed as any)[option.key] === undefined) {
+          ;(parsed as any)[option.key] = option.defaultValue
+        }
+      }
       return parsed as any
     }
     const longMatched = /--[a-z|A-Z|0-9|-|_]+/.test(x)
