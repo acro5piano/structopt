@@ -1,5 +1,5 @@
 import { Instance, IStructOpt, IOption } from './interfaces'
-import { ValidationError } from './errors'
+import { ValidationError, UnexpectedArgsError } from './errors'
 import { basename } from 'path'
 
 export class StructOptImpl<T> {
@@ -36,7 +36,7 @@ export class StructOptImpl<T> {
         }
       })
       if (!option) {
-        throw new Error(
+        throw new UnexpectedArgsError(
           `Found argument '${x}' which wasn't expected, or isn't valid in this context`,
         )
       }

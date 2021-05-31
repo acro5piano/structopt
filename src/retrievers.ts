@@ -1,5 +1,5 @@
 import chalk from 'chalk'
-import { ValidationError } from './errors'
+import { ValidationError, UnexpectedArgsError } from './errors'
 import { findStructOpt } from './registry/structOptRegistry'
 import { Instance } from './interfaces'
 
@@ -16,20 +16,26 @@ export function fromArray<T extends Function>(Opt: T, array: string[]): Instance
     console.log(structOpt.printHelp())
     process.exit(0)
   }
-  const result = structOpt.parse(array)
   try {
+    const result = structOpt.parse(array)
     structOpt.validate(result)
+    return result
   } catch (e) {
     if (e instanceof ValidationError) {
       console.log(chalk.red`error: ${e.message}`)
       for (const prop of e.properties) {
-        console.log(chalk.red`    ${prop}`)
+        console.log(chalk.red`    - ${prop}`)
       }
+      console.log('')
+      console.log(structOpt.printHelp())
+      process.exit(1)
+    }
+    if (e instanceof UnexpectedArgsError) {
+      console.log(chalk.red`error: ${e.message}`)
       console.log('')
       console.log(structOpt.printHelp())
       process.exit(1)
     }
     throw e
   }
-  return result
 }

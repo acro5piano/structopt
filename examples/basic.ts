@@ -1,4 +1,4 @@
-import { StructOpt, Option, fromArgs } from './src'
+import { StructOpt, Option, fromArgs } from '../src'
 
 @StructOpt({
   name: 'example',
