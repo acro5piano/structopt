@@ -1,20 +1,20 @@
 import { StructOptImpl } from '../StructOptImpl'
 
-type Registry = Map<string, StructOptImpl>
+type Registry<T> = Map<string, StructOptImpl<T>>
 
-let registry: Registry | null
+let registry: Registry<any> | null
 
-function getRegistry(): Registry {
+function getRegistry<T>(): Registry<T> {
   if (!registry) {
-    registry = new Map<string, StructOptImpl>()
+    registry = new Map<string, StructOptImpl<T>>()
   }
   return registry
 }
 
-export function addStructOpt(structOpt: StructOptImpl) {
+export function addStructOpt<T>(structOpt: StructOptImpl<T>) {
   getRegistry().set(structOpt.key, structOpt)
 }
 
-export function findStructOpt(key: string) {
-  return getRegistry().get(key)
+export function findStructOpt<T>(key: string) {
+  return getRegistry<T>().get(key)
 }

@@ -8,7 +8,11 @@ import { instanceToPrimitiveType } from './utils'
 
 export function StructOpt(args: Omit<IStructOpt, 'key'>) {
   return function (constructor: Function) {
-    const structOpt = new StructOptImpl({ ...args, key: constructor.name })
+    const structOpt = new StructOptImpl({
+      ...args,
+      key: constructor.name,
+      name: args.name,
+    })
     addStructOpt(structOpt)
     flushThunk(structOpt)
   }
@@ -23,7 +27,7 @@ export function Option(args: Omit<IOption, 'key' | 'type'> = {}) {
       args.long = `--${paramCase(propertyKey)}`
     }
     const typeInstance = Reflect.getMetadata('design:type', target, propertyKey)
-    addThunk((structOpt: StructOptImpl) => {
+    addThunk((structOpt: StructOptImpl<any>) => {
       structOpt.addOption({
         ...args,
         key: propertyKey,

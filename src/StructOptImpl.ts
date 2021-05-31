@@ -1,24 +1,28 @@
-import { IStructOpt, IOption } from './interfaces'
+import { Instance, IStructOpt, IOption } from './interfaces'
+import { basename } from 'path'
 
-export class StructOptImpl {
+export class StructOptImpl<T> {
   key: string
-  name?: string
-  about?: string
+  name: string
+  about: string
+  version: string
   options: IOption[] = []
+  type!: T
 
-  constructor({ key, name, about }: IStructOpt) {
+  constructor({ key, name, about, version }: IStructOpt) {
     this.key = key
-    this.name = name
-    this.about = about
+    this.name = name || key
+    this.about = about || ''
+    this.version = version || ''
   }
 
   addOption(option: IOption) {
     this.options.push(option)
   }
 
-  parse([x, ...xs]: string[], parsed: object = {}): object {
+  parse([x, ...xs]: string[], parsed = {}): Instance<T> {
     if (x === undefined) {
-      return parsed
+      return parsed as any
     }
     const longMatched = /--[a-z|A-Z|0-9|-|_]+/.test(x)
     const shortMatched = /-[a-z|A-Z|0-9]/.test(x)
@@ -71,5 +75,13 @@ export class StructOptImpl {
       })
     }
     return this.parse(xs, parsed)
+  }
+
+  printHelp() {
+    console.log(`${this.name} ${this.version || ''}
+${this.about}
+USAGE:
+  ${basename(process.argv[1]!)}
+`)
   }
 }

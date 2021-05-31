@@ -2,6 +2,7 @@ export interface IStructOpt {
   key: string
   name?: string
   about?: string
+  version?: string
 }
 
 export interface IOption {
@@ -17,3 +18,5 @@ export interface IOption {
 }
 
 export type PrimitiveType = 'boolean' | 'string' | 'number'
+
+export type Instance<T> = T extends new () => infer C ? C : never

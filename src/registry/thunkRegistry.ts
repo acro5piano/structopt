@@ -1,6 +1,6 @@
 import { StructOptImpl } from '../StructOptImpl'
 
-type StructOptThunk = (structOpt: StructOptImpl) => void
+type StructOptThunk = (structOpt: StructOptImpl<any>) => void
 type Registry = Set<StructOptThunk>
 
 let registry: Registry | null
@@ -16,7 +16,7 @@ export function addThunk(thunk: StructOptThunk) {
   getRegistry().add(thunk)
 }
 
-export function flushThunk(structOpt: StructOptImpl) {
+export function flushThunk(structOpt: StructOptImpl<any>) {
   getRegistry().forEach((thunk) => thunk(structOpt))
   getRegistry().clear()
 }

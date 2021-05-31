@@ -5,6 +5,12 @@
 
 Decorator-based CLI option parser
 
+# Features
+
+- **Strongly-Typed**: Use class to declare arguments.
+- **Declarative**: Instead of chaining methods, use class to declare what arguments are needed.
+- **Impressive**: Automatically infers argument name.
+
 # Install
 
 ```
