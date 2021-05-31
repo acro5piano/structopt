@@ -113,13 +113,14 @@ USAGE:
     }${requiredArgs.map((a) => ` <${a.key}>`).join('')}${optionalArgs.length > 0 ? ' [ARGS]' : ''}
 
 ${
-  flags.length > 0 &&
-  `FLAGS:
+  flags.length > 0
+    ? `FLAGS:
 ${flags.map((flag) => `${printFlagsLeft(flag)}    ${flag.description || ''}`).join('\n')}`
+    : ''
 }
 ${
-  options.length > 0 &&
-  `
+  options.length > 0
+    ? `
 OPTIONS:
 ${options
   .map(
@@ -129,10 +130,11 @@ ${options
       )}    ${option.description || ''}`,
   )
   .join('\n')}`
+    : ''
 }
 ${
-  args.length > 0 &&
-  `
+  args.length > 0
+    ? `
 ARGS:
 ${args
   .map(
@@ -143,6 +145,7 @@ ${args
   )
   .join('\n')}
 `
+    : ''
 }`
   }
 }
