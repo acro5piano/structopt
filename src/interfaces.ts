@@ -11,7 +11,7 @@ export interface IOption {
   fromOsStr?: boolean
   long?: string | boolean
   name?: string
-  nullable?: boolean
+  required?: boolean
   requiredIf?: [string, string]
   short?: string | boolean
   type: PrimitiveType

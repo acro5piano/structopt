@@ -1,4 +1,5 @@
 import { Instance, IStructOpt, IOption } from './interfaces'
+import { ValidationError } from './errors'
 import { basename } from 'path'
 
 export class StructOptImpl<T> {
@@ -77,7 +78,15 @@ export class StructOptImpl<T> {
     return this.parse(xs, parsed)
   }
 
-  validate() {}
+  validate(result: Instance<T>) {
+    for (const option of this.options) {
+      if (option.required && (result as any)[option.key] === undefined) {
+        throw new ValidationError(`The following required arguments were not provided`, [
+          option.key,
+        ])
+      }
+    }
+  }
 
   printHelp() {
     const flags = this.options.filter((o) => o.type === 'boolean' && (o.short || o.long))
@@ -86,8 +95,8 @@ export class StructOptImpl<T> {
     )
     const optionsMaxLength = getPrintedMaxLength(options)
     const args = this.options.filter((o) => o.short === undefined && o.long === undefined)
-    const requiredArgs = args.filter((o) => !o.nullable)
-    const optionalArgs = args.filter((o) => o.nullable)
+    const requiredArgs = args.filter((o) => o.required)
+    const optionalArgs = args.filter((o) => !o.required)
     const argsMaxLength = getPrintedMaxLength(args)
 
     return `${this.name} ${this.version || ''}

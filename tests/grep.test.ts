@@ -1,41 +1,40 @@
 import test from 'ava'
-import { StructOpt, Option, fromArray } from '../src'
+import { StructOpt, Option, fromArray, findStructOpt } from '../src'
 
 @StructOpt({
   name: 'example',
   about: 'Search for PATTERNS in each FILE.',
 })
 class GrepArgs {
-  @Option({ short: '-E', long: true, nullable: true })
+  @Option({ short: '-E', long: true })
   extendedRegexp!: boolean
 
-  @Option({ short: true, long: true, nullable: true })
+  @Option({ short: true, long: true })
   maxCount!: number
 
   @Option({ long: true })
   label!: string
+
+  @Option({ description: 'search pattern', required: true })
+  patterns!: string
 }
 
 test('GrepArgs - short', (t) => {
-  t.deepEqual(fromArray(GrepArgs, ['--max-count', '42', '-E', '--label', 'myLabel']), {
+  const res = fromArray(GrepArgs, ['--max-count', '42', '-E', '--label', 'myLabel', '/test/'])
+  t.deepEqual(res, {
     maxCount: 42,
     extendedRegexp: true,
     label: 'myLabel',
+    patterns: '/test/',
   })
 
-  const args = fromArray(GrepArgs, ['--max-count', '42', '-E', '--label', 'myLabel'])
   // @ts-expect-error
-  args.foobarbaz
+  res.foobarbaz
 })
 
-test('GrepArgs - help', (t) => {
-  t.deepEqual(fromArray(GrepArgs, ['-h']), {
-    maxCount: 42,
-    extendedRegexp: true,
-    label: 'myLabel',
+test('GrepArgs - validation error', (t) => {
+  const structOpt = findStructOpt(GrepArgs.name)!
+  t.throws(() => {
+    structOpt.validate({} as never)
   })
-
-  const args = fromArray(GrepArgs, ['--max-count', '42', '-E', '--label', 'myLabel'])
-  // @ts-expect-error
-  args.foobarbaz
 })

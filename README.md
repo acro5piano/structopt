@@ -44,11 +44,11 @@ class Opt {
   speed!: number
 
   // Input file
-  @Option()
+  @Option({ required: true })
   input!: string
 
   // Output file, stdout if not present
-  @Option({ nullable: true })
+  @Option()
   output?: string
 }
 

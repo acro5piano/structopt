@@ -10,21 +10,20 @@ class GrepArgs {
   @Option({
     short: '-E',
     long: true,
-    nullable: true,
     description: 'PATTERNS are extended regular expressions',
   })
   extendedRegexp!: boolean
 
-  @Option({ short: true, long: true, nullable: true, description: 'stop after NUM selected lines' })
+  @Option({ short: true, long: true, description: 'stop after NUM selected lines' })
   maxCount!: number
 
   @Option({ long: true, description: 'use LABEL as the standard input file name prefix' })
   label!: string
 
-  @Option({ description: 'search pattern' })
+  @Option({ description: 'search pattern', required: true })
   patterns!: string
 
-  @Option({ description: 'search files' })
+  @Option({ description: 'search files', required: true })
   file!: string
 }
 
