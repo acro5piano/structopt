@@ -20,8 +20,16 @@ export class StructOptImpl {
     if (x === undefined) {
       return parsed
     }
-    if (/-[a-z|A-Z|0-9]/.test(x)) {
-      const option = this.options.find((o) => o.short === x)
+    const longMatched = /--[a-z|A-Z|0-9|-|_]+/.test(x)
+    const shortMatched = /-[a-z|A-Z|0-9]/.test(x)
+    if (shortMatched || longMatched) {
+      const option = this.options.find((o) => {
+        if (longMatched) {
+          return o.long === x
+        } else {
+          return o.short === x
+        }
+      })
       if (!option) {
         throw new Error(
           `Found argument '${x}' which wasn't expected, or isn't valid in this context`,
@@ -30,7 +38,7 @@ export class StructOptImpl {
       const [value, ...rest] = xs
       if (option.type === 'boolean') {
         if (value === 'false') {
-          return this.parse(xs, {
+          return this.parse(rest, {
             ...parsed,
             [option.key]: false,
           })
@@ -52,6 +60,15 @@ export class StructOptImpl {
           [option.key]: Number(value),
         })
       }
+    }
+    const [positionOption] = this.options.filter(
+      (o) => !o.short && !o.long && !Object.keys(parsed).includes(o.key),
+    )
+    if (positionOption) {
+      return this.parse(xs, {
+        ...parsed,
+        [positionOption.key]: x,
+      })
     }
     return this.parse(xs, parsed)
   }

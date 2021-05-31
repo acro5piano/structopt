@@ -33,10 +33,6 @@ class Opt {
   // Where to write the output: to `stdout` or `file`
   @Option({ short: 'o' })
   outType!: string
-
-  // File name: only required when `out-type` is set to `file`
-  @Option({ name: 'FILE', requiredIf: ['outType', 'file'] })
-  fileName?: string
 }
 
 function main() {

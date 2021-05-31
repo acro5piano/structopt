@@ -7,7 +7,6 @@ import test from 'ava'
 })
 class Opt {
   // Activate debug mode
-  // short and long flags (-d, --debug) will be deduced from the field's name
   @Option({ short: '-d', long: '--debug' })
   debug!: boolean
 
@@ -27,19 +26,27 @@ class Opt {
   // Where to write the output: to `stdout` or `file`
   @Option({ short: '-o' })
   outType!: string
-
-  // File name: only required when `out-type` is set to `file`
-  @Option({ name: 'FILE', requiredIf: ['outType', 'file'] })
-  fileName?: string
 }
 
-test('StructOpt', (t) => {
+test('StructOpt - short', (t) => {
   t.deepEqual(fromArray(Opt, ['-d', '-v', '42', 'test.mp4', '-o', 'file', '/tmp/output.mp4']), {
     debug: true,
     speed: 42,
     input: 'test.mp4',
-    output: undefined,
-    out_type: 'file',
-    file_name: '/tmp/output.mp4',
+    outType: 'file',
+    output: '/tmp/output.mp4',
   })
+})
+
+test('StructOpt - long', (t) => {
+  t.deepEqual(
+    fromArray(Opt, ['--debug', '--velocity', '42', 'test.mp4', '-o', 'file', '/tmp/output.mp4']),
+    {
+      debug: true,
+      speed: 42,
+      input: 'test.mp4',
+      outType: 'file',
+      output: '/tmp/output.mp4',
+    },
+  )
 })

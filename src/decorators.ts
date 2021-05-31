@@ -1,7 +1,9 @@
+import 'reflect-metadata'
 import { StructOptImpl } from './StructOptImpl'
 import { IStructOpt, IOption } from './interfaces'
 import { addStructOpt } from './registry/structOptRegistry'
 import { addThunk, flushThunk } from './registry/thunkRegistry'
+import { instanceToPrimitiveType } from './utils'
 
 export function StructOpt(args: Omit<IStructOpt, 'key'>) {
   return function (constructor: Function) {
@@ -12,12 +14,13 @@ export function StructOpt(args: Omit<IStructOpt, 'key'>) {
 }
 
 export function Option(args: Omit<IOption, 'key' | 'type'> = {}) {
-  return function (_target: any, propertyKey: string) {
+  return function (target: any, propertyKey: string) {
+    const typeInstance = Reflect.getMetadata('design:type', target, propertyKey)
     addThunk((structOpt: StructOptImpl) => {
       structOpt.addOption({
         ...args,
         key: propertyKey,
-        type: 'boolean',
+        type: instanceToPrimitiveType(typeInstance),
       })
     })
   }
