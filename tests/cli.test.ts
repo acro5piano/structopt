@@ -22,31 +22,30 @@ class Opt {
   // Output file, stdout if not present
   @Option({ nullable: true })
   output?: string
-
-  // Where to write the output: to `stdout` or `file`
-  @Option({ short: '-o' })
-  outType!: string
 }
 
 test('StructOpt - short', (t) => {
-  t.deepEqual(fromArray(Opt, ['-d', '-v', '42', 'test.mp4', '-o', 'file', '/tmp/output.mp4']), {
+  t.deepEqual(fromArray(Opt, ['-d', '-v', '42', 'test.mp4', '/tmp/output.mp4']), {
     debug: true,
     speed: 42,
     input: 'test.mp4',
-    outType: 'file',
     output: '/tmp/output.mp4',
   })
 })
 
+test('StructOpt - optional', (t) => {
+  t.deepEqual(fromArray(Opt, ['-d', '-v', '42', 'test.mp4']), {
+    debug: true,
+    speed: 42,
+    input: 'test.mp4',
+  })
+})
+
 test('StructOpt - long', (t) => {
-  t.deepEqual(
-    fromArray(Opt, ['--debug', '--velocity', '42', 'test.mp4', '-o', 'file', '/tmp/output.mp4']),
-    {
-      debug: true,
-      speed: 42,
-      input: 'test.mp4',
-      outType: 'file',
-      output: '/tmp/output.mp4',
-    },
-  )
+  t.deepEqual(fromArray(Opt, ['--debug', '--velocity', '42', 'test.mp4', '/tmp/output.mp4']), {
+    debug: true,
+    speed: 42,
+    input: 'test.mp4',
+    output: '/tmp/output.mp4',
+  })
 })

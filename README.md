@@ -1,3 +1,6 @@
+[![test](https://github.com/acro5piano/structopt/actions/workflows/test.yml/badge.svg)](https://github.com/acro5piano/structopt/actions/workflows/test.yml)
+[![npm version](https://badge.fury.io/js/structopt.svg)](https://badge.fury.io/js/structopt)
+
 # structopt
 
 WIP: Decorator-based CLI option parser
