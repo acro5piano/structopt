@@ -7,11 +7,11 @@ export interface IStructOpt {
 export interface IOption {
   defaultValue?: string
   fromOsStr?: boolean
-  long?: string
+  long?: string | boolean
   name?: string
   nullable?: boolean
   requiredIf?: [string, string]
-  short?: string
+  short?: string | boolean
   type: PrimitiveType
   key: string
 }

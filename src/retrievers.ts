@@ -1,7 +1,7 @@
 import { findStructOpt } from './registry/structOptRegistry'
 
 export function fromArgs(Opt: Function) {
-  return fromArray(Opt, process.argv)
+  return fromArray(Opt, process.argv.slice(2))
 }
 
 export function fromArray(Opt: Function, array: any[]) {

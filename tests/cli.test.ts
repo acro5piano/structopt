@@ -6,20 +6,15 @@ import test from 'ava'
   about: 'An example of StructOpt usage.',
 })
 class Opt {
-  // Activate debug mode
-  @Option({ short: '-d', long: '--debug' })
+  @Option({ short: true, long: true })
   debug!: boolean
 
-  // Set speed
-  // we don't want to name it "speed", need to look smart
   @Option({ short: '-v', long: '--velocity', defaultValue: '42' })
   speed!: number
 
-  // Input file
   @Option()
   input!: string
 
-  // Output file, stdout if not present
   @Option({ nullable: true })
   output?: string
 }
