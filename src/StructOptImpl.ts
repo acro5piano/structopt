@@ -30,8 +30,8 @@ export class StructOptImpl<T> {
       }
       return parsed as any
     }
-    const longMatched = /--[a-z|A-Z|0-9|-|_]+/.test(x)
-    const shortMatched = /-[a-z|A-Z|0-9]/.test(x)
+    const longMatched = /^--[a-z|A-Z|0-9|-|_]+/.test(x)
+    const shortMatched = /^-[a-z|A-Z|0-9]/.test(x)
     if (shortMatched || longMatched) {
       const option = this.options.find((o) => {
         if (longMatched) {
