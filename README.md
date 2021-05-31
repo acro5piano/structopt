@@ -12,29 +12,29 @@ import { StructOpt, Option, fromArgs } from 'structopt'
   about: 'An example of StructOpt usage.',
 })
 class Opt {
-  /// Activate debug mode
+  // Activate debug mode
   // short and long flags (-d, --debug) will be deduced from the field's name
-  @Option({ short: true, long: true })
-  debug: boolean
+  @Option({ short: '-d', long: '--debug' })
+  debug!: boolean
 
-  /// Set speed
+  // Set speed
   // we don't want to name it "speed", need to look smart
-  @Option({ short: 'v', long: 'velocity', defaultValue: '42' })
-  speed: number
+  @Option({ short: '-v', long: '--velocity', defaultValue: '42' })
+  speed!: number
 
-  /// Input file
-  @Option({ fromOsStr: true })
-  input: string
+  // Input file
+  @Option()
+  input!: string
 
-  /// Output file, stdout if not present
-  @Option({ fromOsStr: true, nullable: true })
+  // Output file, stdout if not present
+  @Option({ nullable: true })
   output?: string
 
-  /// Where to write the output: to `stdout` or `file`
-  @Option({ short: true })
-  outType: string
+  // Where to write the output: to `stdout` or `file`
+  @Option({ short: 'o' })
+  outType!: string
 
-  /// File name: only required when `out-type` is set to `file`
+  // File name: only required when `out-type` is set to `file`
   @Option({ name: 'FILE', requiredIf: ['outType', 'file'] })
   fileName?: string
 }

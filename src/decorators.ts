@@ -1,25 +1,23 @@
-import { Program } from './Program'
-import { Param, ParamArgs } from './Param'
-import { addThunk, flushThunk } from './thunk'
+import { StructOptImpl } from './StructOptImpl'
+import { IStructOpt, IOption } from './interfaces'
+import { addStructOpt } from './registry/structOptRegistry'
+import { addThunk, flushThunk } from './registry/thunkRegistry'
 
-const program = new Program()
-
-interface StructOptArgs {
-  name?: string
-  about?: string
+export function StructOpt(args: Omit<IStructOpt, 'key'>) {
+  return function (constructor: Function) {
+    const structOpt = new StructOptImpl({ ...args, key: constructor.name })
+    addStructOpt(structOpt)
+    flushThunk(structOpt)
+  }
 }
 
-export function StructOpt(args: StructOptArgs) {
-  program.name = args.name
-  program.about = args.about
-  flushThunk()
-  return function (_constructor: Function) {}
-}
-
-export function Option(args: ParamArgs) {
+export function Option(args: Omit<IOption, 'key'> = {}) {
   return function (_target: any, propertyKey: string) {
-    addThunk(() => {
-      program.options.push(new Param({ key: propertyKey }))
+    addThunk((structOpt: StructOptImpl) => {
+      structOpt.addOption({
+        ...args,
+        key: propertyKey,
+      })
     })
   }
 }
