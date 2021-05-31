@@ -25,7 +25,7 @@ class Opt {
   output?: string
 
   // Where to write the output: to `stdout` or `file`
-  @Option({ short: 'o' })
+  @Option({ short: '-o' })
   outType!: string
 
   // File name: only required when `out-type` is set to `file`
@@ -35,8 +35,8 @@ class Opt {
 
 test('StructOpt', (t) => {
   t.deepEqual(fromArray(Opt, ['-d', '-v', '42', 'test.mp4', '-o', 'file', '/tmp/output.mp4']), {
-    debug: false,
-    speed: 42.0,
+    debug: true,
+    speed: 42,
     input: 'test.mp4',
     output: undefined,
     out_type: 'file',

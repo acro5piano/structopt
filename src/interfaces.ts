@@ -12,5 +12,6 @@ export interface IOption {
   nullable?: boolean
   requiredIf?: [string, string]
   short?: string
+  type: 'boolean' | 'string' | 'number'
   key: string
 }

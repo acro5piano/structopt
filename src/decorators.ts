@@ -11,12 +11,13 @@ export function StructOpt(args: Omit<IStructOpt, 'key'>) {
   }
 }
 
-export function Option(args: Omit<IOption, 'key'> = {}) {
+export function Option(args: Omit<IOption, 'key' | 'type'> = {}) {
   return function (_target: any, propertyKey: string) {
     addThunk((structOpt: StructOptImpl) => {
       structOpt.addOption({
         ...args,
         key: propertyKey,
+        type: 'boolean',
       })
     })
   }
