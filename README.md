@@ -3,7 +3,19 @@
 
 # structopt
 
-WIP: Decorator-based CLI option parser
+Decorator-based CLI option parser
+
+# Install
+
+```
+npm install --save structopt
+```
+
+Or if you use Yarn:
+
+```
+yarn add structopt
+```
 
 # Example
 
