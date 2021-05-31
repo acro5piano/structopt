@@ -9,7 +9,7 @@ Decorator-based CLI option parser
 
 - **Strongly-Typed**: Use class to declare arguments.
 - **Declarative**: Instead of chaining methods, use class to declare what arguments are needed.
-- **Impressive**: Automatically infers argument name.
+- **Impressive**: Automatically infers argument names from a property name.
 
 # Install
 
@@ -33,22 +33,18 @@ import { StructOpt, Option, fromArgs } from 'structopt'
   about: 'An example of StructOpt usage.',
 })
 class Opt {
-  // Activate debug mode
   // short and long flags (-d, --debug) will be deduced from the field's name
-  @Option({ short: true, long: true })
+  @Option({ short: true, long: true, description: 'Activate debug mode' })
   debug!: boolean
 
-  // Set speed
   // we don't want to name it "speed", need to look smart
-  @Option({ short: '-v', long: '--velocity', defaultValue: '42' })
+  @Option({ short: '-v', long: '--velocity', defaultValue: '42', description: 'Set speed' })
   speed!: number
 
-  // Input file
-  @Option({ required: true })
+  @Option({ required: true, description: 'Input file' })
   input!: string
 
-  // Output file, stdout if not present
-  @Option()
+  @Option({ description: 'Output file, stdout if not present' })
   output?: string
 }
 
@@ -61,6 +57,10 @@ And run
 ```
 ts-node example.ts --debug -v 80 input_file
 
-// => { debug: true, speed: 80, input: 'input_file' }
-
+# Result:
+# {
+#   debug: true,
+#   speed: 80,
+#   input: 'input_file'
+# }
 ```
