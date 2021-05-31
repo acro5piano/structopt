@@ -77,6 +77,8 @@ export class StructOptImpl<T> {
     return this.parse(xs, parsed)
   }
 
+  validate() {}
+
   printHelp() {
     const flags = this.options.filter((o) => o.type === 'boolean' && (o.short || o.long))
     const options = this.options.filter(
@@ -84,13 +86,17 @@ export class StructOptImpl<T> {
     )
     const optionsMaxLength = getPrintedMaxLength(options)
     const args = this.options.filter((o) => o.short === undefined && o.long === undefined)
+    const requiredArgs = args.filter((o) => !o.nullable)
+    const optionalArgs = args.filter((o) => o.nullable)
     const argsMaxLength = getPrintedMaxLength(args)
 
     return `${this.name} ${this.version || ''}
 ${this.about}
 
 USAGE:
-  ${basename(process.argv[1]!)}
+  ${basename(process.argv[1]!)}${flags.length > 0 ? ' [FLAGS]' : ''}${
+      options.length > 0 ? ' [OPTIONS]' : ''
+    }${requiredArgs.map((a) => ` <${a.key}>`).join('')}${optionalArgs.length > 0 ? ' [ARGS]' : ''}
 
 ${
   flags.length > 0 &&

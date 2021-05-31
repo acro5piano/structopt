@@ -36,7 +36,7 @@ test('GrepArgs - help', (t) => {
 Search for PATTERNS in each FILE.
 
 USAGE:
-  subprocess.js
+  subprocess.js [FLAGS] [OPTIONS] <patterns> <file>
 
 FLAGS:
     -E, --extended-regexp    PATTERNS are extended regular expressions
