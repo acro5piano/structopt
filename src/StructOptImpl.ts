@@ -78,10 +78,52 @@ export class StructOptImpl<T> {
   }
 
   printHelp() {
-    console.log(`${this.name} ${this.version || ''}
+    const flags = this.options.filter((o) => o.type === 'boolean' && (o.short || o.long))
+    const options = this.options.filter(
+      (o) => (o.type === 'string' || o.type === 'number') && (o.short || o.long),
+    )
+    const args = this.options.filter((o) => o.short === undefined && o.long === undefined)
+    const optionsMaxLength = options.reduce((max, option) => {
+      if (max < printOptionLeft(option).length) {
+        return printOptionLeft(option).length
+      } else {
+        return max
+      }
+    }, 0)
+
+    return `${this.name} ${this.version || ''}
 ${this.about}
+
 USAGE:
   ${basename(process.argv[1]!)}
-`)
+
+${
+  flags.length > 0 &&
+  `FLAGS:
+${flags.map((flag) => `${printFlagsLeft(flag)}    ${flag.description || ''}`).join('\n')}`
+}
+${
+  options.length > 0 &&
+  `
+OPTIONS:
+${options
+  .map(
+    (option) =>
+      `${printOptionLeft(option)}${' '.repeat(
+        optionsMaxLength - printOptionLeft(option).length,
+      )}    ${option.description || ''}`,
+  )
+  .join('\n')}`
+}
+
+`
   }
+}
+
+function printFlagsLeft(option: IOption) {
+  return `    ${option.short ? `${option.short}, ` : '    '}${option.long || ''}`
+}
+
+function printOptionLeft(option: IOption) {
+  return `    ${option.short ? `${option.short}, ` : '    '}${option.long || ''} <${option.key}>`
 }

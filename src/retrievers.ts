@@ -11,7 +11,7 @@ export function fromArray<T extends Function>(Opt: T, array: string[]): Instance
     throw new Error(`Can't find StructOpt by name: ${Opt.name}`)
   }
   if (array.includes('-h') || array.includes('--help')) {
-    structOpt.printHelp()
+    console.log(structOpt.printHelp())
     process.exit(0)
   }
   return structOpt.parse(array)

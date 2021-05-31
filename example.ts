@@ -3,24 +3,21 @@ import { StructOpt, Option, fromArgs } from './src'
 @StructOpt({
   name: 'example',
   about: 'An example of StructOpt usage.',
+  version: '0.1.5',
 })
 class Opt {
-  // Activate debug mode
   // short and long flags (-d, --debug) will be deduced from the field's name
-  @Option({ short: true, long: true })
+  @Option({ description: 'Activate debug mode', short: true, long: true })
   debug!: boolean
 
-  // Set speed
   // we don't want to name it "speed", need to look smart
-  @Option({ short: '-v', long: '--velocity', defaultValue: '42' })
+  @Option({ description: 'Set speed', short: '-v', long: '--velocity', defaultValue: '42' })
   speed!: number
 
-  // Input file
   @Option()
   input!: string
 
-  // Output file, stdout if not present
-  @Option({ nullable: true })
+  @Option({ description: 'Output file, stdout if not present', nullable: true })
   output?: string
 }
 

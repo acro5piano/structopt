@@ -7,6 +7,7 @@ export interface IStructOpt {
 
 export interface IOption {
   defaultValue?: string
+  description?: string
   fromOsStr?: boolean
   long?: string | boolean
   name?: string

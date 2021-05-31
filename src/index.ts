@@ -1,2 +1,6 @@
 export * from './decorators'
 export * from './retrievers'
+export * from './StructOptImpl'
+export * from './interfaces'
+export * from './registry/structOptRegistry'
+export * from './registry/thunkRegistry'
