@@ -3,7 +3,7 @@ import { ValidationError, UnexpectedArgsError } from './errors'
 import { findStructOpt } from './registry/structOptRegistry'
 import { Instance } from './interfaces'
 
-export function fromArgs(Opt: Function) {
+export function fromArgs<T extends Function>(Opt: T): Instance<T> {
   return fromArray(Opt, process.argv.slice(2))
 }
 
