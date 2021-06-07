@@ -5,14 +5,14 @@ export interface IStructOpt {
   version?: string
 }
 
-export interface IOption {
+export interface IOption<T = any> {
   defaultValue?: string
   description?: string
   fromOsStr?: boolean
   long?: string | boolean
   name?: string
   required?: boolean
-  requiredIf?: [string, string]
+  requiredIf?: (option: T) => boolean
   short?: string | boolean
   type: PrimitiveType
   key: string

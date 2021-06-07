@@ -18,7 +18,7 @@ export function StructOpt(args: Omit<IStructOpt, 'key'> = {}) {
   }
 }
 
-export function Option(args: Omit<IOption, 'key' | 'type'> = {}) {
+export function Option<T>(args: Omit<IOption<T>, 'key' | 'type'> = {}) {
   return function (target: any, propertyKey: string) {
     if (args.short === true) {
       args.short = `-${propertyKey[0]!}`

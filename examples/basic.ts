@@ -15,9 +15,9 @@ class Opt {
   @Option({ description: 'Set speed', short: '-v', long: '--velocity', defaultValue: '42' })
   speed!: number
 
-  // Required option
-  @Option({ short: true, required: true })
-  format!: 'mp4' | 'avi'
+  // Required option, if other output is undefined
+  @Option<Opt>({ short: true, requiredIf: (opt) => opt.output === undefined })
+  format?: 'mp4' | 'avi'
 
   // Without long/short, it will become argument
   @Option({ description: 'search pattern', required: true })

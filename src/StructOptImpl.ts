@@ -84,10 +84,17 @@ export class StructOptImpl<T> {
 
   validate(result: Instance<T>) {
     for (const option of this.options) {
-      if (option.required && (result as any)[option.key] === undefined) {
-        throw new ValidationError(`The following required arguments were not provided`, [
-          option.key,
-        ])
+      if ((result as any)[option.key] === undefined) {
+        if (option.required) {
+          throw new ValidationError(`The following required arguments were not provided`, [
+            option.key,
+          ])
+        }
+        if (option.requiredIf && option.requiredIf(result)) {
+          throw new ValidationError(`The following required arguments were not provided`, [
+            option.key,
+          ])
+        }
       }
     }
   }
