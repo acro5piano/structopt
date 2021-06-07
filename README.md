@@ -65,3 +65,17 @@ ts-node example.ts --debug -v 80 /tmp/input_file
 #   input: '/tmp/input_file'
 # }
 ```
+
+# Roadmap
+
+- [ ] Class-validator integration
+- [ ] Show other meta info
+  - [ ] `Author`
+  - [ ] `Contact`
+  - [ ] `Bug reports`
+- [ ] Sub-command style
+- [ ] Multiple parameters
+  - [ ] For named options (allow multiple times if an option is specified)
+  - [ ] For arguments (like `tar` command)
+- [ ] Environment variable fallback
+- [ ] Custom parser, e.g. ) String to Date conversion
