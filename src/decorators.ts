@@ -2,8 +2,8 @@ import 'reflect-metadata'
 import { paramCase } from 'param-case'
 import { StructOptImpl } from './StructOptImpl'
 import { IStructOpt, IOption } from './interfaces'
-import { addStructOpt } from './registry/structOptRegistry'
-import { addThunk, flushThunk } from './registry/thunkRegistry'
+import { addStructOpt } from './registries/structOptRegistry'
+import { addThunk, flushThunk } from './registries/thunkRegistry'
 import { instanceToPrimitiveType } from './utils'
 
 export function StructOpt(args: Omit<IStructOpt, 'key'> = {}) {

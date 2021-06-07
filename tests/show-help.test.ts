@@ -1,5 +1,5 @@
 import test from 'ava'
-import { StructOpt, Option, findStructOpt } from '../src'
+import { printHelp, StructOpt, Option, findStructOpt } from '../src'
 
 @StructOpt({
   name: 'grep',
@@ -30,7 +30,7 @@ class GrepArgs {
 test('GrepArgs - help', (t) => {
   const structOpt = findStructOpt(GrepArgs.name)!
   t.deepEqual(
-    structOpt.printHelp(),
+    printHelp(structOpt),
     `grep 0.1.5
 Search for PATTERNS in each FILE.
 

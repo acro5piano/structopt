@@ -10,6 +10,7 @@ Decorator-based CLI option parser
 - **Strongly-Typed**: Use class to declare arguments.
 - **Declarative**: Instead of chaining methods, use class to declare what arguments are needed.
 - **Impressive**: Automatically infers argument names from a property name.
+- **Friendly**: Automatically generates help.
 
 # Install
 
@@ -54,13 +55,13 @@ console.log(opt)
 
 And run
 
-```
-ts-node example.ts --debug -v 80 input_file
+```sh
+ts-node example.ts --debug -v 80 /tmp/input_file
 
 # Result:
 # {
 #   debug: true,
 #   speed: 80,
-#   input: 'input_file'
+#   input: '/tmp/input_file'
 # }
 ```

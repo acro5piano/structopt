@@ -7,6 +7,7 @@ import { StructOpt, Option, fromArgs } from '../src'
 })
 class Opt {
   // short and long flags (-d, --debug) will be deduced from the field's name
+  // Boolean value become `false` by default
   @Option({ description: 'Activate debug mode', short: true, long: true })
   debug!: boolean
 
@@ -14,6 +15,11 @@ class Opt {
   @Option({ description: 'Set speed', short: '-v', long: '--velocity', defaultValue: '42' })
   speed!: number
 
+  // Required option
+  @Option({ short: true, required: true })
+  format!: 'mp4' | 'avi'
+
+  // Without long/short, it will become argument
   @Option({ description: 'search pattern', required: true })
   input!: string
 
