@@ -16,6 +16,7 @@ export interface IOption<T = any> {
   short?: string | boolean
   type: PrimitiveType
   key: string
+  repeated: boolean
 }
 
 export type PrimitiveType = 'boolean' | 'string' | 'number'

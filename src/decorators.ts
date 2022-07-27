@@ -4,7 +4,7 @@ import { StructOptImpl } from './StructOptImpl'
 import { IStructOpt, IOption } from './interfaces'
 import { addStructOpt } from './registries/structOptRegistry'
 import { addThunk, flushThunk } from './registries/thunkRegistry'
-import { instanceToPrimitiveType } from './utils'
+import { instanceToPrimitiveType, isArrayType } from './utils'
 
 export function StructOpt(args: Omit<IStructOpt, 'key'> = {}) {
   return function (constructor: Function) {
@@ -18,7 +18,9 @@ export function StructOpt(args: Omit<IStructOpt, 'key'> = {}) {
   }
 }
 
-export function Option<T>(args: Omit<IOption<T>, 'key' | 'type'> = {}) {
+export type OptionsArgs<T> = Omit<IOption<T>, 'key' | 'type' | 'repeated'> & Partial<Pick<IOption<T>, 'type'>>
+
+export function Option<T>(args: OptionsArgs<T> = {}) {
   return function (target: any, propertyKey: string) {
     if (args.short === true) {
       args.short = `-${propertyKey[0]!}`
@@ -27,11 +29,15 @@ export function Option<T>(args: Omit<IOption<T>, 'key' | 'type'> = {}) {
       args.long = `--${paramCase(propertyKey)}`
     }
     const typeInstance = Reflect.getMetadata('design:type', target, propertyKey)
+    if(isArrayType(typeInstance) !== !!args.type) {
+      throw new Error('Value types must be specified for and only for repeated options.')
+    }
     addThunk((structOpt: StructOptImpl<any>) => {
       structOpt.addOption({
         ...args,
         key: propertyKey,
-        type: instanceToPrimitiveType(typeInstance),
+        type: isArrayType(typeInstance) ? args.type! : instanceToPrimitiveType(typeInstance),
+        repeated: isArrayType(typeInstance)
       })
     })
   }
