@@ -56,7 +56,7 @@ console.log(opt)
 And run
 
 ```sh
-ts-node example.ts --debug -v 80 /tmp/input_file
+$ ts-node examples/basic.ts --debug -v 80 /tmp/input_file
 
 # Result:
 # {
@@ -64,6 +64,29 @@ ts-node example.ts --debug -v 80 /tmp/input_file
 #   speed: 80,
 #   input: '/tmp/input_file'
 # }
+```
+
+It also auto generates help text:
+
+```sh
+$ ts-node -T examples/basic.ts -h
+
+example 0.1.5
+An example of StructOpt usage.
+
+USAGE:
+  basic.ts [FLAGS] [OPTIONS] <input> [ARGS]
+
+FLAGS:
+    -d, --debug    Activate debug mode
+
+OPTIONS:
+    -v, --velocity <speed>    Set speed [default: 42]
+    -f,  <format>
+
+ARGS:
+    <input>     search pattern
+    <output>    Output file, stdout if not present
 ```
 
 # Roadmap
