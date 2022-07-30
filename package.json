@@ -1,12 +1,17 @@
 {
   "name": "structopt",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "git@github.com:acro5piano/structopt",
   "author": "gosho-kazuya <ketsume0211@gmail.com>",
   "license": "MIT",
   "description": "Parse command line arguments by defining a struct with TypeScript decorators.",
+  "files": [
+    "dist/*.js",
+    "dist/*.map",
+    "dist/*.d.ts"
+  ],
   "keywords": [
     "cli",
     "typescript",
