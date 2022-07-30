@@ -14,3 +14,9 @@ export function instanceToPrimitiveType(
   }
   throw new Error(`Can't infer type: ${instance}`)
 }
+
+export function isArrayType(
+  instance: new () => unknown
+) {
+  return instance === Array
+}

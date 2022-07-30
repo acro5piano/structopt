@@ -20,11 +20,18 @@ export class StructOptImpl<T> {
     this.options.push(option)
   }
 
-  parse([x, ...xs]: string[], parsed = {}): Instance<T> {
+  parse([x, ...xs]: string[], parsed: Record<string, any> = {}): Instance<T> {
+    validateOptionConfig(this.options)
+
     if (x === undefined) {
       for (const option of this.options) {
-        if (option.defaultValue !== undefined && (parsed as any)[option.key] === undefined) {
-          ;(parsed as any)[option.key] = option.defaultValue
+        if((parsed as any)[option.key] === undefined) {
+          if (option.defaultValue !== undefined ) {
+            ;(parsed as any)[option.key] = option.defaultValue
+          }
+          if(option.repeated) {
+            ;(parsed as any)[option.key] = []
+          }
         }
       }
       return parsed as any
@@ -71,18 +78,27 @@ export class StructOptImpl<T> {
       }
     }
     const [positionOption] = this.options.filter(
-      (o) => !o.short && !o.long && !Object.keys(parsed).includes(o.key),
+      (o) => !o.short && !o.long && (o.repeated || !Object.keys(parsed).includes(o.key)),
     )
     if (positionOption) {
-      return this.parse(xs, {
-        ...parsed,
-        [positionOption.key]: x,
-      })
+      if(positionOption.repeated) {
+        return this.parse(xs, {
+          ...parsed,
+          [positionOption.key]: [...(parsed[positionOption.key] ?? []), x],
+        })
+      } else {
+        return this.parse(xs, {
+          ...parsed,
+          [positionOption.key]: x,
+        })
+      }
     }
     return this.parse(xs, parsed)
   }
 
   validate(result: Instance<T>) {
+    validateOptionConfig(this.options)
+    
     for (const option of this.options) {
       if ((result as any)[option.key] === undefined) {
         if (option.required) {
@@ -95,6 +111,25 @@ export class StructOptImpl<T> {
             option.key,
           ])
         }
+      }
+      if(option.repeated && option.required && (result as any)[option.key].length === 0) {
+        throw new ValidationError(`The following required arguments were not provided`, [
+          option.key,
+        ])
+      }
+    }
+  }
+}
+
+function validateOptionConfig(options: IOption[]) {
+  let repeatedPositionalReached = false
+  for(const option of options) {
+    if(!option.short && !option.long) {
+      if(repeatedPositionalReached) {
+        throw new Error(`Only a single repeated positional option is allowed provided that it is the last one.`)
+      }
+      if(option.repeated) {
+        repeatedPositionalReached = true;
       }
     }
   }
